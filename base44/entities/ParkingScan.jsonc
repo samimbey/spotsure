@@ -1,0 +1,68 @@
+{
+  "name": "ParkingScan",
+  "type": "object",
+  "properties": {
+    "image_url": {
+      "type": "string",
+      "description": "URL of the parking sign photo"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "unclear"
+      ],
+      "description": "Parking decision result"
+    },
+    "confidence": {
+      "type": "number",
+      "description": "Confidence percentage 0-100"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short verdict text e.g. 'You Can Park Here Until 8:00 AM'"
+    },
+    "reasoning": {
+      "type": "string",
+      "description": "Detailed reasoning from AI"
+    },
+    "restrictions_found": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of restrictions detected on the sign"
+    },
+    "park_until": {
+      "type": "string",
+      "description": "Time until parking is allowed or restricted"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Latitude of scan location"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude of scan location"
+    },
+    "address": {
+      "type": "string",
+      "description": "Approximate address of scan"
+    },
+    "notes": {
+      "type": "string",
+      "description": "User notes about this spot"
+    },
+    "scan_time": {
+      "type": "string",
+      "description": "ISO timestamp of when the scan was taken"
+    }
+  },
+  "required": [
+    "image_url",
+    "decision",
+    "summary",
+    "scan_time"
+  ]
+}
