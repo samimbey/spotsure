@@ -138,7 +138,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
         <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center mx-auto">
           <Camera className="w-10 h-10 text-primary" />
         </div>
-        <h1 className="text-3xl font-extrabold tracking-tight">CanIPark?</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Spotr</h1>
         <p className="text-muted-foreground text-sm max-w-[260px] mx-auto leading-relaxed">
           Snap a photo of any parking sign and get an instant answer
         </p>
