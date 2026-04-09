@@ -88,7 +88,7 @@ Return your analysis as JSON.`;
         },
         required: ["decision", "confidence", "summary", "reasoning", "restrictions_found"]
       },
-      model: "gpt_5"
+      model: "gemini_3_flash"
     });
 
     setResult(analysis);
@@ -97,6 +97,11 @@ Return your analysis as JSON.`;
 
   const handleSave = async () => {
     if (!result || !imageUrl) return;
+    const isAuthed = await base44.auth.isAuthenticated();
+    if (!isAuthed) {
+      base44.auth.redirectToLogin(window.location.pathname);
+      return;
+    }
     setIsSaving(true);
     toast.success("Spot saved!");
     handleScanAgain();

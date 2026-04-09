@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, MapPin, User, CheckCircle, ChevronRight } from "lucide-react";
+import { Camera, MapPin, User, CheckCircle, ChevronRight, Image } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 
@@ -10,6 +10,7 @@ export default function PermissionsGate({ children }) {
   const [user, setUser] = useState(null);
   const [cameraGranted, setCameraGranted] = useState(false);
   const [locationGranted, setLocationGranted] = useState(false);
+  const [photosGranted, setPhotosGranted] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,12 +29,23 @@ export default function PermissionsGate({ children }) {
           const loc = await navigator.permissions.query({ name: "geolocation" }).catch(() => null);
           if (cam?.state === "granted") setCameraGranted(true);
           if (loc?.state === "granted") setLocationGranted(true);
+          setPhotosGranted(true); // photos access is implicit on web
         }
       }
       setLoading(false);
     };
     check();
   }, []);
+
+  const requestPhotos = async () => {
+    // Trigger a file picker to prompt photos access
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = () => setPhotosGranted(true);
+    input.click();
+    setPhotosGranted(true);
+  };
 
   const requestCamera = async () => {
     try {
@@ -95,46 +107,64 @@ export default function PermissionsGate({ children }) {
 
       {/* Permissions */}
       <motion.div
-        initial={{ y: 30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.25 }}
-        className="space-y-3 mb-6"
+      initial={{ y: 30, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.25 }}
+      className="space-y-3 mb-6"
       >
-        {/* Camera */}
-        <button
-          onClick={requestCamera}
-          disabled={cameraGranted}
-          className="w-full flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50 active:scale-[0.98] transition-all disabled:opacity-70"
-        >
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${cameraGranted ? "bg-emerald-500/15" : "bg-secondary"}`}>
-            <Camera className={`w-5 h-5 ${cameraGranted ? "text-emerald-400" : "text-muted-foreground"}`} />
-          </div>
-          <div className="flex-1 text-left">
-            <p className="font-semibold text-sm">Camera Access</p>
-            <p className="text-xs text-muted-foreground">To photograph parking signs</p>
-          </div>
-          {cameraGranted
-            ? <CheckCircle className="w-5 h-5 text-emerald-400" />
-            : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
-        </button>
+      {/* Camera */}
+      <button
+        onClick={requestCamera}
+        disabled={cameraGranted}
+        className="w-full flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50 active:scale-[0.98] transition-all disabled:opacity-70"
+      >
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${cameraGranted ? "bg-emerald-500/15" : "bg-secondary"}`}>
+          <Camera className={`w-5 h-5 ${cameraGranted ? "text-emerald-400" : "text-muted-foreground"}`} />
+        </div>
+        <div className="flex-1 text-left">
+          <p className="font-semibold text-sm">Camera Access</p>
+          <p className="text-xs text-muted-foreground">To photograph parking signs</p>
+        </div>
+        {cameraGranted
+          ? <CheckCircle className="w-5 h-5 text-emerald-400" />
+          : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+      </button>
 
-        {/* Location */}
-        <button
-          onClick={requestLocation}
-          disabled={locationGranted}
-          className="w-full flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50 active:scale-[0.98] transition-all disabled:opacity-70"
-        >
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${locationGranted ? "bg-emerald-500/15" : "bg-secondary"}`}>
-            <MapPin className={`w-5 h-5 ${locationGranted ? "text-emerald-400" : "text-muted-foreground"}`} />
-          </div>
-          <div className="flex-1 text-left">
-            <p className="font-semibold text-sm">Location Access</p>
-            <p className="text-xs text-muted-foreground">To tag and map your saved spots</p>
-          </div>
-          {locationGranted
-            ? <CheckCircle className="w-5 h-5 text-emerald-400" />
-            : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
-        </button>
+      {/* Photos */}
+      <button
+        onClick={requestPhotos}
+        disabled={photosGranted}
+        className="w-full flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50 active:scale-[0.98] transition-all disabled:opacity-70"
+      >
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${photosGranted ? "bg-emerald-500/15" : "bg-secondary"}`}>
+          <Image className={`w-5 h-5 ${photosGranted ? "text-emerald-400" : "text-muted-foreground"}`} />
+        </div>
+        <div className="flex-1 text-left">
+          <p className="font-semibold text-sm">Photos Access</p>
+          <p className="text-xs text-muted-foreground">To upload photos from your camera roll</p>
+        </div>
+        {photosGranted
+          ? <CheckCircle className="w-5 h-5 text-emerald-400" />
+          : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+      </button>
+
+      {/* Location */}
+      <button
+        onClick={requestLocation}
+        disabled={locationGranted}
+        className="w-full flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50 active:scale-[0.98] transition-all disabled:opacity-70"
+      >
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${locationGranted ? "bg-emerald-500/15" : "bg-secondary"}`}>
+          <MapPin className={`w-5 h-5 ${locationGranted ? "text-emerald-400" : "text-muted-foreground"}`} />
+        </div>
+        <div className="flex-1 text-left">
+          <p className="font-semibold text-sm">Location Access</p>
+          <p className="text-xs text-muted-foreground">To tag and map your saved spots</p>
+        </div>
+        {locationGranted
+          ? <CheckCircle className="w-5 h-5 text-emerald-400" />
+          : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+      </button>
       </motion.div>
 
       {/* CTA */}
@@ -144,14 +174,26 @@ export default function PermissionsGate({ children }) {
         transition={{ delay: 0.35 }}
         className="mb-10 space-y-3"
       >
+        {!user && (
+          <button
+            onClick={() => base44.auth.redirectToLogin()}
+            className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base active:scale-[0.97] transition-all shadow-lg shadow-primary/20 no-select"
+          >
+            Sign In to Save Spots
+          </button>
+        )}
         <button
           onClick={finish}
-          className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base active:scale-[0.97] transition-all shadow-lg shadow-primary/20 no-select"
+          className={`w-full h-14 rounded-2xl font-semibold text-base active:scale-[0.97] transition-all no-select ${
+            user
+              ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+              : "bg-secondary text-secondary-foreground"
+          }`}
         >
-          {cameraGranted && locationGranted ? "Get Started" : "Continue Anyway"}
+          {user ? "Get Started" : "Continue as Guest"}
         </button>
         <p className="text-center text-xs text-muted-foreground">
-          You can update permissions anytime in your device settings.
+          {user ? "You can update permissions anytime in your device settings." : "Guests can scan signs but cannot save spots."}
         </p>
       </motion.div>
     </div>

@@ -81,7 +81,7 @@ export default function DecisionDisplay({ result, onScanAgain, onSave, isSaving 
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="bg-black/20 backdrop-blur-sm rounded-t-3xl"
+        className="bg-black/20 backdrop-blur-sm rounded-t-3xl flex flex-col max-h-[60vh]"
       >
         {/* Toggle details */}
         {result.reasoning && (
@@ -100,7 +100,7 @@ export default function DecisionDisplay({ result, onScanAgain, onSave, isSaving 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden px-6"
+              className="overflow-y-auto px-6 max-h-[30vh]"
             >
               <p className="text-white/80 text-sm leading-relaxed pb-3">
                 {result.reasoning}

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 export default function CameraCapture({ onCapture, isAnalyzing }) {
   const [flashOn, setFlashOn] = useState(false);
   const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [stream, setStream] = useState(null);
@@ -54,9 +55,8 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      onCapture(file);
-    }
+    if (file) onCapture(file);
+    e.target.value = "";
   };
 
   if (isAnalyzing) {
@@ -147,7 +147,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
       {/* Action buttons */}
       <div className="w-full max-w-sm space-y-3">
         <button
-          onClick={startCamera}
+          onClick={() => cameraInputRef.current?.click()}
           className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all shadow-lg shadow-primary/20"
         >
           <Camera className="w-5 h-5" />
@@ -159,14 +159,23 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
           className="w-full h-14 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all"
         >
           <ImagePlus className="w-5 h-5" />
-          Upload Photo
+          Upload from Camera Roll
         </button>
 
+        {/* Native camera capture */}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+        {/* Gallery picker */}
         <input
           ref={fileInputRef}
           type="file"
           accept="image/*"
-          capture="environment"
           onChange={handleFileSelect}
           className="hidden"
         />
