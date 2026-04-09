@@ -12,7 +12,7 @@ export default function BottomNav() {
   const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 no-select">
       <div className="bg-card/80 backdrop-blur-xl border-t border-border/50 pb-safe">
         <div className="flex items-end justify-around px-4 pt-2 pb-3 max-w-md mx-auto">
           {navItems.map((item) => {

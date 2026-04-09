@@ -98,6 +98,8 @@ Return your analysis as JSON.`;
   const handleSave = async () => {
     if (!result || !imageUrl) return;
     setIsSaving(true);
+    toast.success("Spot saved!");
+    handleScanAgain();
 
     let address = "";
     if (location) {
@@ -126,8 +128,6 @@ Return your analysis as JSON.`;
       address,
       scan_time: new Date().toISOString(),
     });
-
-    toast.success("Spot saved!");
     setIsSaving(false);
   };
 

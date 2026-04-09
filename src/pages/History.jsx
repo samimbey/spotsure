@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import { Camera, Search } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -8,15 +8,30 @@ export default function History() {
   const [scans, setScans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+  const touchStartY = useRef(0);
+  const scrollRef = useRef(null);
 
-  useEffect(() => {
-    const load = async () => {
-      const data = await base44.entities.ParkingScan.list("-created_date", 100);
-      setScans(data);
-      setLoading(false);
-    };
-    load();
+  const load = useCallback(async (isRefresh = false) => {
+    if (isRefresh) setRefreshing(true);
+    else setLoading(true);
+    const data = await base44.entities.ParkingScan.list("-created_date", 100);
+    setScans(data);
+    setLoading(false);
+    setRefreshing(false);
   }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleTouchStart = (e) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    const delta = e.changedTouches[0].clientY - touchStartY.current;
+    const atTop = scrollRef.current?.scrollTop === 0;
+    if (delta > 60 && atTop) load(true);
+  };
 
   const filtered = scans.filter((s) =>
     !search ||
@@ -25,7 +40,19 @@ export default function History() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className="min-h-screen bg-background overflow-y-auto"
+      ref={scrollRef}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Pull-to-refresh indicator */}
+      {refreshing && (
+        <div className="flex justify-center pt-4">
+          <div className="w-5 h-5 border-2 border-muted border-t-primary rounded-full animate-spin" />
+        </div>
+      )}
+
       {/* Header */}
       <div className="px-5 pt-14 pb-4">
         <h1 className="text-2xl font-extrabold tracking-tight">Scan History</h1>

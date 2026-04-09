@@ -85,5 +85,11 @@
 
   body {
     @apply bg-background text-foreground font-inter;
+    overscroll-behavior-y: none;
   }
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
 }
