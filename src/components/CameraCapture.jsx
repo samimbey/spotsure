@@ -147,7 +147,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
       {/* Action buttons */}
       <div className="w-full max-w-sm space-y-3">
         <button
-          onClick={() => cameraInputRef.current?.click()}
+          onClick={() => fileInputRef.current?.click()}
           className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all shadow-lg shadow-primary/20"
         >
           <Camera className="w-5 h-5" />
@@ -162,16 +162,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
           Upload from Camera Roll
         </button>
 
-        {/* Native camera capture */}
-        <input
-          ref={cameraInputRef}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-        {/* Gallery picker */}
+        {/* Single file input — iOS shows native picker with Camera + Library options */}
         <input
           ref={fileInputRef}
           type="file"
