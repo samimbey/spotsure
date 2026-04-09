@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Camera, Clock, MapPin } from "lucide-react";
+import { Camera, Clock, MapPin, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { path: "/history", icon: Clock, label: "History" },
   { path: "/", icon: Camera, label: "Scan", isCenter: true },
   { path: "/map", icon: MapPin, label: "Map" },
+  { path: "/settings", icon: Settings, label: "Settings" },
 ];
 
 export default function BottomNav() {

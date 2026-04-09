@@ -13,6 +13,7 @@ import History from './pages/History';
 import MapView from './pages/MapView';
 import ScanDetail from './pages/ScanDetail';
 import Settings from './pages/Settings';
+import PermissionsGate from './components/PermissionsGate';
 
 const PageSlide = ({ children }) => (
   <motion.div
@@ -52,18 +53,20 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route element={<Layout />}>
-          <Route path="/" element={<PageSlide><CameraPage /></PageSlide>} />
-          <Route path="/history" element={<PageSlide><History /></PageSlide>} />
-          <Route path="/map" element={<PageSlide><MapView /></PageSlide>} />
-          <Route path="/scan/:id" element={<PageSlide><ScanDetail /></PageSlide>} />
-          <Route path="/settings" element={<PageSlide><Settings /></PageSlide>} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
-    </AnimatePresence>
+    <PermissionsGate>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<PageSlide><CameraPage /></PageSlide>} />
+            <Route path="/history" element={<PageSlide><History /></PageSlide>} />
+            <Route path="/map" element={<PageSlide><MapView /></PageSlide>} />
+            <Route path="/scan/:id" element={<PageSlide><ScanDetail /></PageSlide>} />
+            <Route path="/settings" element={<PageSlide><Settings /></PageSlide>} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </AnimatePresence>
+    </PermissionsGate>
   );
 };
 
