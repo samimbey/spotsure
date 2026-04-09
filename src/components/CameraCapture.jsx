@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 export default function CameraCapture({ onCapture, isAnalyzing }) {
   const [flashOn, setFlashOn] = useState(false);
   const fileInputRef = useRef(null);
-  const cameraInputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [stream, setStream] = useState(null);
@@ -162,7 +161,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
           Upload from Camera Roll
         </button>
 
-        {/* Single file input — iOS shows native picker with Camera + Library options */}
+        {/* Single input — iOS WKWebView shows native sheet: Take Photo / Photo Library */}
         <input
           ref={fileInputRef}
           type="file"
