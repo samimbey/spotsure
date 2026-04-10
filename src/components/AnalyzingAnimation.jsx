@@ -21,7 +21,7 @@ export default function AnalyzingAnimation() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-8 px-6">
       {/* Road SVG */}
-      <div className="relative w-56 h-56 flex items-center justify-center">
+      <div className="relative w-32 h-32 flex items-center justify-center">
         <svg
           viewBox="0 0 200 200"
           fill="none"
