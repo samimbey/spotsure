@@ -179,7 +179,7 @@ export default function PermissionsGate({ children }) {
             onClick={() => base44.auth.redirectToLogin()}
             className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base active:scale-[0.97] transition-all shadow-lg shadow-primary/20 no-select"
           >
-            Sign In to Save Spots
+            Sign In
           </button>
         )}
         <button
