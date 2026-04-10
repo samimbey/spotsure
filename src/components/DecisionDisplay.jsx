@@ -119,7 +119,7 @@ export default function DecisionDisplay({ result, onScanAgain, onSave, isSaving 
         </AnimatePresence>
 
         {/* Action buttons */}
-        <div className="flex gap-3 px-6 pb-8 pt-2">
+        <div className="flex gap-3 px-6 pb-28 pt-2">
           <button
             onClick={onScanAgain}
             className="flex-1 h-14 rounded-2xl bg-white/20 backdrop-blur-sm text-white font-semibold flex items-center justify-center gap-2 active:scale-[0.97] transition-all"
