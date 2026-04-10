@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
-import { Camera, Zap, ZapOff, ImagePlus, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Camera, Zap, ZapOff, ImagePlus } from "lucide-react";
 
 export default function CameraCapture({ onCapture, isAnalyzing }) {
   const [flashOn, setFlashOn] = useState(false);
@@ -12,6 +11,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
   const [cameraError, setCameraError] = useState(false);
 
   const startCamera = async () => {
+    setCameraError(false);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } }
@@ -20,7 +20,6 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
         videoRef.current.srcObject = mediaStream;
         setStream(mediaStream);
         setCameraActive(true);
-        setCameraError(false);
       }
     } catch {
       setCameraError(true);
@@ -89,7 +88,6 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
 
         {/* Camera overlay */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Viewfinder corners */}
           <div className="absolute top-1/4 left-8 right-8 bottom-1/4">
             <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white/70 rounded-tl-lg" />
             <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white/70 rounded-tr-lg" />
@@ -120,7 +118,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
           </button>
 
           <button
-            onClick={() => { stopCamera(); }}
+            onClick={stopCamera}
             className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/70 text-xs font-medium"
           >
             ✕
@@ -145,24 +143,26 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
 
       {/* Action buttons */}
       <div className="w-full max-w-sm space-y-3">
+        {/* Open Camera uses getUserMedia — works natively in Base44's WKWebView */}
         <button
-          onClick={() => fileInputRef.current?.click()}
+          onClick={startCamera}
           className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all shadow-lg shadow-primary/20"
         >
           <Camera className="w-5 h-5" />
           Open Camera
         </button>
 
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="w-full h-14 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all"
+        {/* Upload via label — direct tap on label triggers file input without JS .click() */}
+        <label
+          htmlFor="gallery-input"
+          className="w-full h-14 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all cursor-pointer select-none"
         >
           <ImagePlus className="w-5 h-5" />
           Upload from Camera Roll
-        </button>
+        </label>
 
-        {/* Single input — iOS WKWebView shows native sheet: Take Photo / Photo Library */}
         <input
+          id="gallery-input"
           ref={fileInputRef}
           type="file"
           accept="image/*"
@@ -172,8 +172,8 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
       </div>
 
       {cameraError && (
-        <p className="text-sm text-muted-foreground text-center">
-          Camera not available. Use upload instead.
+        <p className="text-sm text-destructive text-center">
+          Camera access denied. Please allow camera access in your device settings.
         </p>
       )}
     </div>
