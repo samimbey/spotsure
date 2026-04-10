@@ -85,7 +85,7 @@ export default function PermissionsGate({ children }) {
         </motion.div>
 
         <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
-          <h1 className="text-3xl font-extrabold tracking-tight">Welcome to Spotr</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight">Welcome to SpotSure</h1>
           <p className="text-muted-foreground text-sm mt-2 max-w-[280px] mx-auto leading-relaxed">
             Instantly decode any parking sign — we just need a couple of permissions.
           </p>
