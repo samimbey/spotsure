@@ -23,24 +23,21 @@ export default function AnalyzingAnimation() {
       {/* Road SVG */}
       <div className="relative w-32 h-32 flex items-center justify-center">
         <svg
-          viewBox="0 0 200 200"
+          viewBox="0 0 120 160"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full"
         >
-          {/* Winding road path */}
+          {/* Road body - S-curve with perspective, wide at bottom narrowing at top */}
           <motion.path
-            d="M 100 190 
-               C 100 190, 40 170, 40 140 
-               C 40 110, 160 110, 160 80 
-               C 160 50, 40 50, 40 20 
-               C 40 10, 100 10, 100 10"
+            d="M 30 160 C 30 140, 90 130, 80 100 C 70 70, 20 60, 40 30 C 50 15, 80 10, 85 5"
             stroke="hsl(210 100% 56%)"
-            strokeWidth="6"
+            strokeWidth="22"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            initial={{ pathLength: 0, opacity: 0.3 }}
+            pathLength="1"
+            initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{
               pathLength: {
@@ -48,23 +45,20 @@ export default function AnalyzingAnimation() {
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatType: "loop",
-                repeatDelay: 0.3,
+                repeatDelay: 0.4,
               },
-              opacity: { duration: 0.5 },
+              opacity: { duration: 0.4 },
             }}
           />
           {/* Dashed center line */}
           <motion.path
-            d="M 100 190 
-               C 100 190, 40 170, 40 140 
-               C 40 110, 160 110, 160 80 
-               C 160 50, 40 50, 40 20 
-               C 40 10, 100 10, 100 10"
-            stroke="hsl(210 100% 56% / 0.25)"
-            strokeWidth="2"
+            d="M 30 160 C 30 140, 90 130, 80 100 C 70 70, 20 60, 40 30 C 50 15, 80 10, 85 5"
+            stroke="hsl(var(--background))"
+            strokeWidth="3"
             strokeLinecap="round"
-            strokeDasharray="6 8"
+            strokeDasharray="8 10"
             fill="none"
+            pathLength="1"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
             transition={{
@@ -73,7 +67,7 @@ export default function AnalyzingAnimation() {
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatType: "loop",
-                repeatDelay: 0.3,
+                repeatDelay: 0.4,
               },
             }}
           />
