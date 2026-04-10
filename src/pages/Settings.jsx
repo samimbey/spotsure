@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { ArrowLeft, Trash2, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Trash2, AlertTriangle, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Settings() {
@@ -33,6 +33,16 @@ export default function Settings() {
         {/* Delete Account */}
         <div className="p-4 rounded-2xl bg-card border border-border/50">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Account</p>
+          <button
+            onClick={() => {
+              localStorage.removeItem("spotr_onboarded");
+              base44.auth.logout();
+            }}
+            className="w-full h-12 rounded-xl bg-secondary border border-border/50 text-foreground font-semibold text-sm flex items-center justify-center gap-2 no-select mb-3"
+          >
+            <LogOut className="w-4 h-4" />
+            Log Out
+          </button>
           <button
             onClick={() => setShowConfirm(true)}
             className="w-full h-12 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive font-semibold text-sm flex items-center justify-center gap-2 no-select"
