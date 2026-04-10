@@ -28,82 +28,53 @@ export default function AnalyzingAnimation() {
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full"
         >
-          {/* Road surface (wide, grey) */}
+          {/* Winding road path */}
           <motion.path
             d="M 100 190 
                C 100 190, 40 170, 40 140 
                C 40 110, 160 110, 160 80 
                C 160 50, 40 50, 40 20 
                C 40 10, 100 10, 100 10"
-            stroke="hsl(215 15% 28%)"
-            strokeWidth="22"
+            stroke="hsl(210 100% 56%)"
+            strokeWidth="6"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            initial={{ pathLength: 0, opacity: 0 }}
+            initial={{ pathLength: 0, opacity: 0.3 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{
-              pathLength: { duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "loop", repeatDelay: 0.3 },
-              opacity: { duration: 0.4 },
+              pathLength: {
+                duration: 2,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "loop",
+                repeatDelay: 0.3,
+              },
+              opacity: { duration: 0.5 },
             }}
           />
-          {/* Road edges (subtle lighter border) */}
+          {/* Dashed center line */}
           <motion.path
             d="M 100 190 
                C 100 190, 40 170, 40 140 
                C 40 110, 160 110, 160 80 
                C 160 50, 40 50, 40 20 
                C 40 10, 100 10, 100 10"
-            stroke="hsl(215 15% 40%)"
-            strokeWidth="22"
+            stroke="hsl(210 100% 56% / 0.25)"
+            strokeWidth="2"
             strokeLinecap="round"
-            strokeLinejoin="round"
+            strokeDasharray="6 8"
             fill="none"
-            strokeDasharray="0"
-            style={{ filter: "none" }}
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
             transition={{
-              pathLength: { duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "loop", repeatDelay: 0.3 },
-              opacity: { duration: 0.4 },
-            }}
-          />
-          {/* Road surface inner (dark fill) */}
-          <motion.path
-            d="M 100 190 
-               C 100 190, 40 170, 40 140 
-               C 40 110, 160 110, 160 80 
-               C 160 50, 40 50, 40 20 
-               C 40 10, 100 10, 100 10"
-            stroke="hsl(225 20% 12%)"
-            strokeWidth="16"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{
-              pathLength: { duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "loop", repeatDelay: 0.3 },
-              opacity: { duration: 0.4 },
-            }}
-          />
-          {/* Dashed center lane line */}
-          <motion.path
-            d="M 100 190 
-               C 100 190, 40 170, 40 140 
-               C 40 110, 160 110, 160 80 
-               C 160 50, 40 50, 40 20 
-               C 40 10, 100 10, 100 10"
-            stroke="hsl(45 93% 60%)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeDasharray="10 10"
-            fill="none"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 0.85 }}
-            transition={{
-              pathLength: { duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "loop", repeatDelay: 0.3 },
-              opacity: { duration: 0.4 },
+              pathLength: {
+                duration: 2,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "loop",
+                repeatDelay: 0.3,
+              },
             }}
           />
         </svg>
