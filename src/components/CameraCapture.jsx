@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Camera, ImagePlus } from "lucide-react";
+import AnalyzingAnimation from "./AnalyzingAnimation";
 
 export default function CameraCapture({ onCapture, isAnalyzing }) {
   const cameraInputRef = useRef(null);
@@ -12,20 +13,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
   };
 
   if (isAnalyzing) {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center gap-6">
-        <div className="relative">
-          <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Camera className="w-8 h-8 text-primary" />
-          </div>
-        </div>
-        <div className="text-center space-y-2">
-          <p className="text-lg font-semibold text-foreground">Analyzing Sign...</p>
-          <p className="text-sm text-muted-foreground">This takes 2–3 seconds</p>
-        </div>
-      </div>
-    );
+    return <AnalyzingAnimation />;
   }
 
   return (
