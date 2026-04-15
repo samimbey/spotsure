@@ -37,7 +37,7 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
           className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base flex items-center justify-center gap-3 active:scale-[0.97] transition-all shadow-lg shadow-primary/20 cursor-pointer select-none"
         >
           <Camera className="w-5 h-5" />
-          Open Camera
+          Scan Parking Sign
         </label>
         <input
           id="camera-capture-input"
