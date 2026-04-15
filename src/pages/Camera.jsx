@@ -26,7 +26,15 @@ export default function Camera() {
     setIsAnalyzing(true);
     setResult(null);
 
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    let file_url;
+    try {
+      const uploaded = await base44.integrations.Core.UploadFile({ file });
+      file_url = uploaded.file_url;
+    } catch {
+      setIsAnalyzing(false);
+      toast.error("Couldn't upload image — please try again");
+      return;
+    }
     setImageUrl(file_url);
 
     const now = new Date();
@@ -53,43 +61,56 @@ Analyze ALL visible signs and restrictions. Consider:
 
 Return your analysis as JSON.`;
 
-    const analysis = await base44.integrations.Core.InvokeLLM({
-      prompt,
-      file_urls: [file_url],
-      response_json_schema: {
-        type: "object",
-        properties: {
-          decision: {
-            type: "string",
-            enum: ["yes", "no", "unclear"],
-            description: "Can the user park here right now?"
+    let analysis;
+    try {
+      analysis = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        file_urls: [file_url],
+        response_json_schema: {
+          type: "object",
+          properties: {
+            decision: {
+              type: "string",
+              enum: ["yes", "no", "unclear"],
+              description: "Can the user park here right now?"
+            },
+            confidence: {
+              type: "number",
+              description: "Confidence percentage 0-100"
+            },
+            summary: {
+              type: "string",
+              description: "Short verdict like 'You Can Park Here Until 8:00 AM' or 'Street Cleaning Until 4 PM' or 'Please Review Signs'. Do NOT include the decision word (YES/NO/UNCLEAR) in the summary."
+            },
+            reasoning: {
+              type: "string",
+              description: "Brief explanation of the restrictions found and why the decision was made"
+            },
+            restrictions_found: {
+              type: "array",
+              items: { type: "string" },
+              description: "List of specific restrictions detected (e.g., 'No Parking 8AM-10AM Mon/Thu', '2hr Meter', 'Permit Zone A')"
+            },
+            park_until: {
+              type: "string",
+              description: "If parking is allowed, until when. If not, when restriction ends."
+            }
           },
-          confidence: {
-            type: "number",
-            description: "Confidence percentage 0-100"
-          },
-          summary: {
-            type: "string",
-            description: "Short verdict like 'You Can Park Here Until 8:00 AM' or 'Street Cleaning Until 4 PM' or 'Please Review Signs'. Do NOT include the decision word (YES/NO/UNCLEAR) in the summary."
-          },
-          reasoning: {
-            type: "string",
-            description: "Brief explanation of the restrictions found and why the decision was made"
-          },
-          restrictions_found: {
-            type: "array",
-            items: { type: "string" },
-            description: "List of specific restrictions detected (e.g., 'No Parking 8AM-10AM Mon/Thu', '2hr Meter', 'Permit Zone A')"
-          },
-          park_until: {
-            type: "string",
-            description: "If parking is allowed, until when. If not, when restriction ends."
-          }
+          required: ["decision", "confidence", "summary", "reasoning", "restrictions_found"]
         },
-        required: ["decision", "confidence", "summary", "reasoning", "restrictions_found"]
-      },
-      model: "gemini_3_flash"
-    });
+        model: "gemini_3_flash"
+      });
+    } catch {
+      setIsAnalyzing(false);
+      toast.error("Couldn't read sign — please try a clearer photo");
+      return;
+    }
+
+    if (!analysis?.decision) {
+      setIsAnalyzing(false);
+      toast.error("Couldn't read sign — make sure a parking sign is visible");
+      return;
+    }
 
     setResult(analysis);
     setIsAnalyzing(false);

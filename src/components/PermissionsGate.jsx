@@ -159,7 +159,7 @@ export default function PermissionsGate({ children }) {
         </div>
         <div className="flex-1 text-left">
           <p className="font-semibold text-sm">Location Access</p>
-          <p className="text-xs text-muted-foreground">To tag and map your saved spots</p>
+          <p className="text-xs text-muted-foreground">Used to tag scan locations and map your saved spots</p>
         </div>
         {locationGranted
           ? <CheckCircle className="w-5 h-5 text-emerald-400" />

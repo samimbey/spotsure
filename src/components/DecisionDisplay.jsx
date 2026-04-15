@@ -118,6 +118,11 @@ export default function DecisionDisplay({ result, onScanAgain, onSave, isSaving 
           )}
         </AnimatePresence>
 
+        {/* Disclaimer */}
+        <p className="text-center text-white/40 text-xs px-6 pt-1">
+          AI-based guidance only. Always verify posted parking signs.
+        </p>
+
         {/* Action buttons */}
         <div className="flex gap-3 px-6 pb-28 pt-2">
           <button
