@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { getLocalScans } from "@/lib/localScans";
 import { Camera, MapPin, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -44,7 +44,7 @@ export default function MapView() {
 
   useEffect(() => {
     const load = async () => {
-      const data = await base44.entities.ParkingScan.list("-created_date", 200);
+      const data = getLocalScans();
       setScans(data.filter((s) => s.latitude && s.longitude));
       setLoading(false);
 

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { base44 } from "@/api/base44Client";
 import { Camera, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import ScanCard from "../components/ScanCard";
+import { getLocalScans } from "@/lib/localScans";
 
 export default function History() {
   const [scans, setScans] = useState([]);
@@ -12,10 +12,10 @@ export default function History() {
   const touchStartY = useRef(0);
   const scrollRef = useRef(null);
 
-  const load = useCallback(async (isRefresh = false) => {
+  const load = useCallback((isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
-    const data = await base44.entities.ParkingScan.list("-created_date", 100);
+    const data = getLocalScans();
     setScans(data);
     setLoading(false);
     setRefreshing(false);

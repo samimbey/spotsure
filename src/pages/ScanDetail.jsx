@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import { ArrowLeft, MapPin, Clock, Trash2, CheckCircle, XCircle, AlertTriangle, Edit3 } from "lucide-react";
+import { getLocalScanById, deleteLocalScan, updateLocalScan } from "@/lib/localScans";
 import { cn } from "@/lib/utils";
 import moment from "moment";
 import { toast } from "sonner";
@@ -21,25 +21,20 @@ export default function ScanDetail() {
   const [editingNotes, setEditingNotes] = useState(false);
 
   useEffect(() => {
-    const load = async () => {
-      const scans = await base44.entities.ParkingScan.filter({ id });
-      if (scans.length > 0) {
-        setScan(scans[0]);
-        setNotes(scans[0].notes || "");
-      }
-      setLoading(false);
-    };
-    load();
+    const scan = getLocalScanById(id);
+    setScan(scan);
+    setNotes(scan?.notes || "");
+    setLoading(false);
   }, [id]);
 
-  const handleDelete = async () => {
-    await base44.entities.ParkingScan.delete(id);
+  const handleDelete = () => {
+    deleteLocalScan(id);
     toast.success("Scan deleted");
     navigate("/history");
   };
 
-  const handleSaveNotes = async () => {
-    await base44.entities.ParkingScan.update(id, { notes });
+  const handleSaveNotes = () => {
+    updateLocalScan(id, { notes });
     setEditingNotes(false);
     toast.success("Notes saved");
   };

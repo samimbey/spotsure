@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import CameraCapture from "../components/CameraCapture";
 import DecisionDisplay from "../components/DecisionDisplay";
 import { toast } from "sonner";
+import { saveLocalScan } from "@/lib/localScans";
 
 export default function Camera() {
   const navigate = useNavigate();
@@ -118,30 +119,27 @@ Return your analysis as JSON.`;
 
   const handleSave = async () => {
     if (!result || !imageUrl) return;
-    const isAuthed = await base44.auth.isAuthenticated();
-    if (!isAuthed) {
-      base44.auth.redirectToLogin(window.location.pathname);
-      return;
-    }
     setIsSaving(true);
-    toast.success("Spot saved!");
-    handleScanAgain();
 
     let address = "";
     if (location) {
-      const geo = await base44.integrations.Core.InvokeLLM({
-        prompt: `What is the approximate street address for coordinates ${location.lat}, ${location.lng}? Return just the address as a short string, like "123 Main St, San Francisco, CA". If you don't know, return "Unknown location".`,
-        add_context_from_internet: true,
-        response_json_schema: {
-          type: "object",
-          properties: { address: { type: "string" } },
-          required: ["address"]
-        }
-      });
-      address = geo.address || "";
+      try {
+        const geo = await base44.integrations.Core.InvokeLLM({
+          prompt: `What is the approximate street address for coordinates ${location.lat}, ${location.lng}? Return just the address as a short string, like "123 Main St, San Francisco, CA". If you don't know, return "Unknown location".`,
+          add_context_from_internet: true,
+          response_json_schema: {
+            type: "object",
+            properties: { address: { type: "string" } },
+            required: ["address"]
+          }
+        });
+        address = geo.address || "";
+      } catch {
+        address = "";
+      }
     }
 
-    await base44.entities.ParkingScan.create({
+    saveLocalScan({
       image_url: imageUrl,
       decision: result.decision,
       confidence: result.confidence,
@@ -154,7 +152,10 @@ Return your analysis as JSON.`;
       address,
       scan_time: new Date().toISOString(),
     });
+
     setIsSaving(false);
+    toast.success("Spot saved!");
+    handleScanAgain();
   };
 
   const handleScanAgain = () => {

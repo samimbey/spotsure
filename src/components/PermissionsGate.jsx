@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import { Camera, MapPin, User, CheckCircle, ChevronRight, Image } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { Camera, MapPin, CheckCircle, ChevronRight, Image } from "lucide-react";
 import { motion } from "framer-motion";
 
 const STORAGE_KEY = "spotr_onboarded";
 
 export default function PermissionsGate({ children }) {
   const [onboarded, setOnboarded] = useState(true); // default true to avoid flash
-  const [user, setUser] = useState(null);
   const [cameraGranted, setCameraGranted] = useState(false);
   const [locationGranted, setLocationGranted] = useState(false);
   const [photosGranted, setPhotosGranted] = useState(false);
@@ -16,8 +14,6 @@ export default function PermissionsGate({ children }) {
   useEffect(() => {
     const check = async () => {
       const done = localStorage.getItem(STORAGE_KEY);
-      const me = await base44.auth.me().catch(() => null);
-      setUser(me);
 
       if (done) {
         setOnboarded(true);
@@ -91,18 +87,7 @@ export default function PermissionsGate({ children }) {
           </p>
         </motion.div>
 
-        {/* User pill */}
-        {user && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border/50"
-          >
-            <User className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm font-medium">{user.full_name || user.email}</span>
-          </motion.div>
-        )}
+
       </div>
 
       {/* Permissions */}
@@ -174,26 +159,14 @@ export default function PermissionsGate({ children }) {
         transition={{ delay: 0.35 }}
         className="mb-10 space-y-3"
       >
-        {!user && (
-          <button
-            onClick={() => base44.auth.redirectToLogin()}
-            className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base active:scale-[0.97] transition-all shadow-lg shadow-primary/20 no-select"
-          >
-            Sign In
-          </button>
-        )}
         <button
           onClick={finish}
-          className={`w-full h-14 rounded-2xl font-semibold text-base active:scale-[0.97] transition-all no-select ${
-            user
-              ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-              : "bg-secondary text-secondary-foreground"
-          }`}
+          className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-base active:scale-[0.97] transition-all shadow-lg shadow-primary/20 no-select"
         >
-          {user ? "Get Started" : "Continue as Guest"}
+          Get Started
         </button>
         <p className="text-center text-xs text-muted-foreground">
-          {user ? "You can update permissions anytime in your device settings." : "Guests can scan signs but cannot save spots."}
+          You can update permissions anytime in your device settings.
         </p>
       </motion.div>
     </div>
