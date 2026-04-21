@@ -11,6 +11,7 @@ import History from './pages/History';
 import MapView from './pages/MapView';
 import ScanDetail from './pages/ScanDetail';
 import Settings from './pages/Settings';
+import About from './pages/About';
 import PermissionsGate from './components/PermissionsGate';
 
 const PageSlide = ({ children }) => (
@@ -37,6 +38,7 @@ const MainApp = () => {
             <Route path="/map" element={<PageSlide><MapView /></PageSlide>} />
             <Route path="/scan/:id" element={<PageSlide><ScanDetail /></PageSlide>} />
             <Route path="/settings" element={<PageSlide><Settings /></PageSlide>} />
+            <Route path="/about" element={<PageSlide><About /></PageSlide>} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
