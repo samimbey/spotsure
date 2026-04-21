@@ -75,9 +75,9 @@ export default function PermissionsGate({ children }) {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center"
+          className="w-20 h-20 rounded-3xl overflow-hidden shadow-lg"
         >
-          <Camera className="w-10 h-10 text-primary" />
+          <img src="https://media.base44.com/images/public/69d7eb7aef7e046ba8d879cd/45251002f_ChatGPTImageApr21202605_02_24PM.png" alt="SpotSure" className="w-full h-full object-cover" />
         </motion.div>
 
         <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>

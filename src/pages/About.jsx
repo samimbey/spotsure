@@ -40,8 +40,8 @@ export default function About() {
 
         {/* Hero */}
         <div className="flex items-center gap-4 mb-2">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center shrink-0">
-            <Camera className="w-8 h-8 text-primary" />
+          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md shrink-0">
+            <img src="https://media.base44.com/images/public/69d7eb7aef7e046ba8d879cd/45251002f_ChatGPTImageApr21202605_02_24PM.png" alt="SpotSure" className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight">SpotSure</h1>
