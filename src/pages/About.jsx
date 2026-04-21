@@ -1,75 +1,131 @@
-import { Camera, MapPin, Clock, Info, Shield, Zap } from "lucide-react";
+import { Camera, MapPin, Clock, Shield, Zap, ImagePlus, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+
+const steps = [
+  {
+    number: "1",
+    icon: Camera,
+    title: "Point Your Camera",
+    desc: "Open the Scan tab and tap 'Scan Parking Sign'. Point your camera at any parking sign — make sure the full sign is in frame.",
+  },
+  {
+    number: "2",
+    icon: Zap,
+    title: "AI Reads the Sign",
+    desc: "SpotSure's AI instantly analyzes every rule on the sign — time limits, street cleaning, permit zones, meter rules, and more.",
+  },
+  {
+    number: "3",
+    icon: CheckCircle,
+    title: "Get Your Answer",
+    desc: "You'll see a clear YES, NO, or UNCLEAR verdict based on the current time and day, along with a plain-English explanation.",
+  },
+  {
+    number: "4",
+    icon: MapPin,
+    title: "Save the Spot",
+    desc: "Tap 'Save Spot' to log the scan to your history and pin it on your map for easy reference later.",
+  },
+];
+
+const features = [
+  { icon: Clock, label: "Time-aware", desc: "Checks restrictions against the current time and day of week" },
+  { icon: ImagePlus, label: "Camera Roll", desc: "Upload photos from your library if you already took a picture" },
+  { icon: MapPin, label: "Location Tagging", desc: "Spots are pinned on a map so you can find them again" },
+];
 
 export default function About() {
   return (
     <div className="min-h-screen bg-background overflow-y-auto">
-      <div className="px-5 pt-14 pb-28">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center">
+      <div className="px-5 pt-14 pb-28 max-w-lg mx-auto">
+
+        {/* Hero */}
+        <div className="flex items-center gap-4 mb-2">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center shrink-0">
             <Camera className="w-8 h-8 text-primary" />
           </div>
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight">SpotSure</h1>
-            <p className="text-sm text-muted-foreground">Parking sign decoder</p>
+            <p className="text-sm text-muted-foreground">Instant parking sign decoder</p>
           </div>
         </div>
 
-        {/* How it works */}
-        <div className="mb-6">
-          <h2 className="text-base font-bold mb-3">How It Works</h2>
-          <div className="space-y-3">
-            {[
-              { icon: Camera, title: "Take a Photo", desc: "Snap any parking sign with your camera or upload from your library." },
-              { icon: Zap, title: "AI Analysis", desc: "Our AI reads the sign and cross-checks all restrictions for the current time and day." },
-              { icon: MapPin, title: "Save Your Spots", desc: "Save results to your history and view them on the map for future reference." },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex gap-4 p-4 rounded-2xl bg-card border border-border/50">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5 text-primary" />
+        {/* Tagline */}
+        <p className="text-muted-foreground text-sm leading-relaxed mt-4 mb-8">
+          Never second-guess a parking sign again. SpotSure uses AI to read any sign and tells you instantly whether you can park — right now, on this day, at this time.
+        </p>
+
+        {/* Step by step */}
+        <h2 className="text-base font-bold mb-4">How to Use SpotSure</h2>
+        <div className="space-y-3 mb-8">
+          {steps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.number} className="flex gap-4 p-4 rounded-2xl bg-card border border-border/50">
+                <div className="flex flex-col items-center gap-1 shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
+                    <span className="text-primary font-extrabold text-sm">{step.number}</span>
+                  </div>
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">{title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{desc}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Icon className="w-4 h-4 text-primary" />
+                    <p className="font-semibold text-sm">{step.title}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        {/* Tips */}
-        <div className="mb-6">
-          <h2 className="text-base font-bold mb-3">Tips for Best Results</h2>
-          <div className="p-4 rounded-2xl bg-card border border-border/50 space-y-2">
-            {[
-              "Make sure the entire sign is visible in the frame",
-              "Good lighting produces more accurate results",
-              "Capture all signs on the same pole",
-              "Hold the camera steady to avoid blur",
-            ].map((tip, i) => (
-              <div key={i} className="flex gap-3 items-start">
-                <span className="text-primary font-bold text-xs mt-0.5">{i + 1}.</span>
-                <p className="text-sm text-muted-foreground">{tip}</p>
+        {/* Result key */}
+        <h2 className="text-base font-bold mb-4">Understanding Results</h2>
+        <div className="space-y-2 mb-8">
+          {[
+            { icon: CheckCircle, color: "text-emerald-400", bg: "bg-emerald-500/10", label: "YES", desc: "You can park here right now." },
+            { icon: XCircle, color: "text-red-400", bg: "bg-red-500/10", label: "NO", desc: "Parking is not allowed at this time." },
+            { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-500/10", label: "UNCLEAR", desc: "The sign was hard to read — try a clearer photo." },
+          ].map(({ icon: Icon, color, bg, label, desc }) => (
+            <div key={label} className={`flex items-center gap-3 p-3 rounded-xl ${bg} border border-white/5`}>
+              <Icon className={`w-5 h-5 ${color} shrink-0`} />
+              <div>
+                <span className={`font-bold text-sm ${color}`}>{label} — </span>
+                <span className="text-sm text-muted-foreground">{desc}</span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Features */}
+        <h2 className="text-base font-bold mb-4">Features</h2>
+        <div className="grid grid-cols-1 gap-2 mb-8">
+          {features.map(({ icon: Icon, label, desc }) => (
+            <div key={label} className="flex gap-3 p-3 rounded-xl bg-card border border-border/50 items-center">
+              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Icon className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">{label}</p>
+                <p className="text-xs text-muted-foreground">{desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Disclaimer */}
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 mb-6">
           <div className="flex gap-3 items-start">
             <Shield className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-sm text-amber-300">Important Disclaimer</p>
+              <p className="font-semibold text-sm text-amber-300">Disclaimer</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                SpotSure uses AI to interpret parking signs and is provided for guidance only. Always verify the posted signs yourself. We are not responsible for any parking tickets or violations.
+                SpotSure is AI-powered guidance only. Always verify posted signs yourself before parking. We are not responsible for any parking tickets or violations.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Version */}
-        <p className="text-center text-xs text-muted-foreground mt-8">SpotSure v1.0</p>
+        <p className="text-center text-xs text-muted-foreground">SpotSure v1.0 · Made with ❤️</p>
       </div>
     </div>
   );
