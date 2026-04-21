@@ -20,8 +20,8 @@ export default function CameraCapture({ onCapture, isAnalyzing }) {
     <div className="flex-1 flex flex-col items-center justify-center px-6 gap-8">
       {/* Logo area */}
       <div className="text-center space-y-3">
-        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center mx-auto">
-          <Camera className="w-10 h-10 text-primary" />
+        <div className="w-20 h-20 rounded-3xl overflow-hidden shadow-lg mx-auto">
+          <img src="https://media.base44.com/images/public/69d7eb7aef7e046ba8d879cd/45251002f_ChatGPTImageApr21202605_02_24PM.png" alt="SpotSure" className="w-full h-full object-cover" />
         </div>
         <h1 className="text-3xl font-extrabold tracking-tight">SpotSure</h1>
         <p className="text-muted-foreground text-sm max-w-[260px] mx-auto leading-relaxed">
