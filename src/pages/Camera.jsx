@@ -23,13 +23,32 @@ export default function Camera() {
     }
   }, []);
 
+  const compressImage = (file) =>
+    new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const maxW = 1200;
+        const scale = img.width > maxW ? maxW / img.width : 1;
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        canvas.toBlob((blob) => resolve(new File([blob], file.name, { type: "image/jpeg" })), "image/jpeg", 0.85);
+      };
+      img.src = url;
+    });
+
   const handleCapture = async (file) => {
     setIsAnalyzing(true);
     setResult(null);
 
+    const compressed = await compressImage(file);
+
     let file_url;
     try {
-      const uploaded = await base44.integrations.Core.UploadFile({ file });
+      const uploaded = await base44.integrations.Core.UploadFile({ file: compressed });
       file_url = uploaded.file_url;
     } catch {
       setIsAnalyzing(false);
