@@ -28,14 +28,14 @@ export default function Camera() {
       const img = new Image();
       const url = URL.createObjectURL(file);
       img.onload = () => {
-        const maxW = 1200;
+        const maxW = 900;
         const scale = img.width > maxW ? maxW / img.width : 1;
         const canvas = document.createElement("canvas");
         canvas.width = img.width * scale;
         canvas.height = img.height * scale;
         canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
         URL.revokeObjectURL(url);
-        canvas.toBlob((blob) => resolve(new File([blob], file.name, { type: "image/jpeg" })), "image/jpeg", 0.85);
+        canvas.toBlob((blob) => resolve(new File([blob], file.name, { type: "image/jpeg" })), "image/jpeg", 0.7);
       };
       img.src = url;
     });
@@ -62,24 +62,7 @@ export default function Camera() {
     const dayStr = now.toLocaleDateString("en-US", { weekday: "long" });
     const dateStr = now.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
-    const prompt = `You are a parking sign analysis expert. Analyze the parking sign(s) in this photo and determine if a driver can legally park at this spot RIGHT NOW.
-
-Current time: ${timeStr}
-Current day: ${dayStr}
-Current date: ${dateStr}
-${location ? `Location: approximately ${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}` : ""}
-
-Analyze ALL visible signs and restrictions. Consider:
-- Time restrictions (hours, days)
-- Permit requirements
-- Meter rules
-- Street cleaning windows
-- Tow-away notices
-- Temporary restrictions
-- Loading zones
-- Any other restrictions
-
-Return your analysis as JSON.`;
+    const prompt = `Can a driver park here right now? Time: ${timeStr}, ${dayStr} ${dateStr}. Read all signs and return JSON.`;
 
     let analysis;
     try {
